@@ -5,7 +5,7 @@ require('dotenv').config();
 const Logger = require('js-logger');
 const cors = require('cors');
 
-const APIRouter = require('./api/router');
+const APIRouter = require('./api/server');
 const APPRouter = require('./app/app');
 
 const app = express();
@@ -16,8 +16,8 @@ Logger.useDefaults();
 Logger.setLevel(process.env.NODE_ENV === 'production' ? Logger.ERROR : Logger.DEBUG);
 
 app.use(express.json());
-
 app.use(cors());
+
 app.use('/api', APIRouter);
 app.use('/', APPRouter);
 
