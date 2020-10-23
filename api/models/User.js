@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+mongoose.set('useCreateIndex', true);
 
-const User = new Schema({
+const User = new mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -18,7 +18,8 @@ const User = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    index: { unique: true }
   },
   phone: {
     type: Number,
@@ -26,11 +27,11 @@ const User = new Schema({
   },
   address: {
     type: String,
-    default: 'default'
+    default: null
   },
   companyName: {
     type: String,
-    default: 'default'
+    default: null
   },
   bills: {
     type: Array,

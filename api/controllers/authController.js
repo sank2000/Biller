@@ -1,3 +1,4 @@
+const logger = require('js-logger');
 const bcrypt = require('bcrypt');
 const saltRounds = 5;
 
@@ -64,28 +65,29 @@ exports.signIn = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       res.json({
-        message: 'Unique ID not exits',
+        message: 'Email ID not exits',
         auth: false
       });
+    } else {
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (result) {
+          req.session.user = user._id;
+          const { password, ...Data } = user._doc;
+          res.json({
+            ...Data,
+            message: `Welcome ${user.name}!`,
+            auth: true
+          });
+        } else {
+          res.json({
+            message: 'Incorrect Password',
+            auth: false
+          });
+        }
+      });
     }
-    bcrypt.compare(password, user.password, function (err, result) {
-      if (result) {
-        req.session.user = user._id;
-        const { password, ...Data } = user._doc;
-        res.json({
-          ...Data,
-          message: `Welcome ${user.name}!`,
-          auth: true
-        });
-      } else {
-        res.json({
-          message: 'Incorrect Password',
-          auth: false
-        });
-      }
-    });
   } catch (err) {
-    console.log('Error: Mongo DB server rejected the request!' + err);
+    logger.ERROR('Error:' + err);
   }
 };
 
