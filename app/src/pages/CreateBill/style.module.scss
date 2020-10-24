@@ -12,6 +12,10 @@
 .bill_top {
   border-bottom: 1px solid rgba(180, 178, 178, 0.76);
   padding: 7px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .bill_bottom {
