@@ -1,0 +1,42 @@
+.section {
+  width: 90%;
+  margin: 0 auto;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  height: 15rem;
+
+  width: 25rem;
+
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  border-radius: 1rem;
+  margin: 1rem;
+  text-align: center;
+  box-shadow: 0 0.4rem 0.8rem rgba(black, 0.5);
+  transition: all 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(150%);
+    transform: translateY(-1rem);
+
+    .text {
+      color: #eee;
+    }
+  }
+
+  .text {
+    color: #fff;
+    position: absolute;
+    width: 95%;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
