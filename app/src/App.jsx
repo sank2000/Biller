@@ -1,10 +1,11 @@
 import React from 'react';
-import { Home } from './pages';
+import { Login } from './pages';
+import "./app.css";
 
 export default () => {
   return (
     <>
-      <Home />
+      <Login />
     </>
   );
 };

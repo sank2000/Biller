@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  text-align: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+
+.leftSide {
+  width: 70%;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+}
+
+.rightSide {
+  width: 30%;
+  padding: 0 1rem;
+  min-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
