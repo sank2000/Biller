@@ -5,12 +5,12 @@ const Schema = mongoose.Schema;
 mongoose.set('useCreateIndex', true);
 
 const Bill = new Schema({
-  CustomerId: {
+  customerId: {
     type: String,
     required: true
   },
-  CompanyId: {
-    type: String,
+  company: {
+    type: Object,
     required: true
   },
   items: {
@@ -22,17 +22,21 @@ const Bill = new Schema({
     type: Number,
     required: true
   },
+  subTotal: {
+    type: Number,
+    required: true
+  },
   total: {
     type: Number,
     required: true
   },
-  status: {
-    type: Number,
+  paid: {
+    type: Boolean,
     required: true,
-    default: 'Not paid'
+    default: false
   }
 });
 
-const user = mongoose.model('bills', Bill);
+const bill = mongoose.model('bills', Bill);
 
-module.exports = user;
+module.exports = bill;

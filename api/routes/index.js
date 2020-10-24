@@ -1,3 +1,4 @@
 const auth = require('./auth');
+const bill = require('./bill');
 
-module.exports = { auth };
+module.exports = { auth,bill };
