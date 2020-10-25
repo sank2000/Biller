@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-const { auth } = require('./routes');
+const { auth,user } = require('./routes');
 
 router.use(
   session({
@@ -24,6 +24,7 @@ mongoose.connect(process.env.DB_URL, {
 });
 
 router.use('/auth', auth);
+router.use('/user', user);
 
 router.get('*', (req, res) => {
   res.status(404).send('Unknown Request');
