@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import {Button ,Typography} from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -18,6 +18,8 @@ import axios from "axios";
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import MailIcon from '@material-ui/icons/Mail';
 import PersonIcon from '@material-ui/icons/Person';
+
+import { Auth } from "../../contexts";
 
 const styles = (theme) => ({
   root: {
@@ -119,6 +121,7 @@ export default ({ open, setOpen, data }) => {
   const { items,paid,_id,customerId, ...totals } = data;
 
   const [user, setUser] = useState(null);
+  const { session } = useContext(Auth);
 
   const handleClose = () => {
     setOpen(false);
@@ -135,7 +138,9 @@ export default ({ open, setOpen, data }) => {
   }
 
   useEffect(() => {
-    getUser();
+    if (session.type === "owner") {
+      getUser();
+    }
     // eslint-disable-next-line 
   },[])
 

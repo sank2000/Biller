@@ -28,8 +28,11 @@ export default function Home() {
     <AppBar />
     <section className={classes.section}>
       {session.type === "customer" && <Card name="Pay Bill" image='/images/pay.jpg' link="/paybill" />}
+      {session.type === "customer" && <Card name="Transaction History" image='/images/history.jpg' link="/history" />}
+
       {session.type === "owner" && <Card name="Create Bill" image='/images/create.jpg' link="/createbill" />}
-      {(session.type === "customer" || session.type === "owner") && <Card name="Bills" image='/images/history.jpg' link="/showbill" />}
+      {session.type === "owner" && <Card name="Bills" image='/images/history.jpg' link="/showbill" />}
+
       {session.type === "admin" && <Card name="Create Account" image='/images/create.jpg' link="/createuser" />}
     </section>
   </>;
