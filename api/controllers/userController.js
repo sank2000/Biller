@@ -11,3 +11,13 @@ exports.getUser = async(req, res) => {
     console.log(err)
   }
 };
+
+exports.getUserbyId = async(req, res) => {
+  try {
+    const users = await User.findById(req.body.id,{password : 0});
+    res.json(users);
+  }
+  catch (err) {
+    console.log(err)
+  }
+};
