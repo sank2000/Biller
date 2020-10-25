@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { AppBar } from '../../components';
 import { Typography } from '@material-ui/core';
 import classes from "./Home.module.scss";
+import { Auth } from "../../contexts";
 
 function Card({ name, image, link, ...props }) {
   return (
@@ -20,13 +21,16 @@ function Card({ name, image, link, ...props }) {
 }
 
 export default function Home() {
+
+  const { session } = useContext(Auth);
+  
   return <>
     <AppBar />
     <section className={classes.section}>
-      <Card name="Pay Bill" image='/images/pay.jpg' link="#a" />
-      <Card name="Create Bill" image='/images/create.jpg' link="#a" />
-      <Card name="Transaction History" image='/images/history.jpg' link="#a" />
-      <Card name="Create Account" image='/images/create.jpg' link="#a" />
+      {session.type === "customer" && <Card name="Pay Bill" image='/images/pay.jpg' link="/paybill" />}
+      {session.type === "owner" && <Card name="Create Bill" image='/images/create.jpg' link="/createbill" />}
+      {(session.type === "customer" || session.type === "owner") && <Card name="Transaction History" image='/images/history.jpg' link="#a" />}
+      {session.type === "admin" && <Card name="Create Account" image='/images/create.jpg' link="/createuser" />}
     </section>
   </>;
 }

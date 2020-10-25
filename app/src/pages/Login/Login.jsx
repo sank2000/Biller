@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import { TextField, Button, Typography } from '@material-ui/core';
 import classes from "./style.module.scss";
 
@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { Auth } from "../../contexts";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -21,6 +22,7 @@ export default () => {
     type: "",
     message: ""
   });
+  const { setSession } = useContext(Auth);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -50,6 +52,7 @@ export default () => {
           type: "success",
           message: res.data.message
         })
+        setSession(res.data);
       }
       else {
         setAlert({
