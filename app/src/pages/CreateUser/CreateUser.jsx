@@ -49,7 +49,10 @@ export default () => {
         setAlert({
           type: "success",
           message: res.data.message
-        })
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       }
       else {
         setAlert({

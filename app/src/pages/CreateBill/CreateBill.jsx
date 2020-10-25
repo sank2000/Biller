@@ -120,7 +120,10 @@ export default () => {
         setAlert({
           type: "success",
           message: res.data.message
-        })
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       }
       else {
         setAlert({
@@ -140,7 +143,7 @@ export default () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get("/api/user/");
+      const res = await axios.get("/api/user/customer");
       setUsers(res.data.map(data => {
         return {
           value: data._id,

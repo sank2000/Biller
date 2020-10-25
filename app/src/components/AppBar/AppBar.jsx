@@ -31,10 +31,12 @@ export default () => {
   return <div>
     <AppBar position="static">
       <Toolbar>
-        <img src={"/images/bill.png"} style={{ width: "1.5rem",height: "1.5rem",marginRight: ".5rem" }} alt="logo" />
-        <Typography variant="h6" style={{flexGrow: 1}}>
-          Biller
-        </Typography>
+        <a href="/" style={{textDecoration: "none",flexGrow: 1,display: 'flex',alignItems: 'center'}}>
+          <img src={"/images/bill.png"} style={{ width: "1.5rem",height: "1.5rem",marginRight: ".5rem" }} alt="logo" />
+          <Typography variant="h6" style={{color: "black"}}>
+            Biller
+          </Typography>
+        </a>
         <IconButton onClick={handleClick}>
           <AccountCircle />
         </IconButton>

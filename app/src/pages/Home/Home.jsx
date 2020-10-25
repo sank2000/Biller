@@ -29,7 +29,7 @@ export default function Home() {
     <section className={classes.section}>
       {session.type === "customer" && <Card name="Pay Bill" image='/images/pay.jpg' link="/paybill" />}
       {session.type === "owner" && <Card name="Create Bill" image='/images/create.jpg' link="/createbill" />}
-      {(session.type === "customer" || session.type === "owner") && <Card name="Transaction History" image='/images/history.jpg' link="#a" />}
+      {(session.type === "customer" || session.type === "owner") && <Card name="Bills" image='/images/history.jpg' link="#a" />}
       {session.type === "admin" && <Card name="Create Account" image='/images/create.jpg' link="/createuser" />}
     </section>
   </>;
