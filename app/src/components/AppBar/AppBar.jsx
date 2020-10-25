@@ -33,12 +33,12 @@ export default () => {
       <Toolbar>
         <a href="/" style={{textDecoration: "none",flexGrow: 1,display: 'flex',alignItems: 'center'}}>
           <img src={"/images/bill.png"} style={{ width: "1.5rem",height: "1.5rem",marginRight: ".5rem" }} alt="logo" />
-          <Typography variant="h6" style={{color: "black"}}>
+          <Typography variant="h6" style={{color: "white"}}>
             Biller
           </Typography>
         </a>
         <IconButton onClick={handleClick}>
-          <AccountCircle />
+          <AccountCircle style={{color: "white"}}/>
         </IconButton>
         <Menu
           id="simple-menu"

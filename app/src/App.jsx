@@ -12,8 +12,8 @@ import { Auth } from './contexts';
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#FF7315" },
-    secondary: { main: "#C73E1D" },
+    primary: { main: "#21295C" },
+    secondary: { main: "#1B3B6F" },
   }
 });
 

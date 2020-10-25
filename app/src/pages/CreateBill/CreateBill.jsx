@@ -206,8 +206,8 @@ export default () => {
           <Button variant="outlined" color="secondary" onClick={() => setOpen(true)}>
             Add Item
           </Button>
-          <Button variant="outlined" color="primary" onClick={handleSubmit} disabled={user === "" || items.length === 0 }>
-            Create {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem"}}/>}
+          <Button variant="contained" color="primary" onClick={handleSubmit} disabled={user === "" || items.length === 0 }>
+            Create {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem",color: "white"}}/>}
           </Button>
         </div>
       </div>

@@ -84,8 +84,8 @@ export default () => {
       <form onSubmit={handleSubmit}>
         <TextField label="Email" type="email" variant="outlined" name="email" onChange={handleChange} style={{width : "100%",marginBottom : "2rem"}} required/>
         <TextField type="password" label="Password" name="password" onChange={handleChange} variant="outlined" style={{ width: "100%",marginBottom: "2rem" }} required/>
-        <Button variant="outlined" color="primary" type="submit">
-            Login  {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem"}}/>}
+        <Button variant="contained" color="primary" type="submit">
+            Login  {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem",color: "white"}}/>}
         </Button>
       </form>
     </div>

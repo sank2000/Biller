@@ -35,6 +35,8 @@ const Bill = new Schema({
     required: true,
     default: false
   }
+}, {
+  timestamps: true
 });
 
 const bill = mongoose.model('bills', Bill);

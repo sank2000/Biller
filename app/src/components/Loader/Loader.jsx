@@ -14,7 +14,7 @@ export default() => {
     >
       <FadeLoader
         size={150}
-        color={"#FF7315"}
+        color={"#21295C"}
         loading={true}
       />
     </div>

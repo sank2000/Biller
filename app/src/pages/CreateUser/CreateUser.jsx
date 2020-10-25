@@ -111,8 +111,8 @@ export default () => {
         </TextField>
         <TextField label="Company Name" onChange={handleChange} name="companyName"  variant="outlined" style={commonStyle} />
         <TextField label="Address" onChange={handleChange} name="address"  multiline rows={4} variant="outlined" style={commonStyle} />
-        <Button variant="outlined" color="primary" type="submit">
-          Create {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem"}}/>}
+        <Button variant="contained" color="primary" type="submit">
+          Create {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem",color: "white"}}/>}
         </Button>
       </form>
        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
