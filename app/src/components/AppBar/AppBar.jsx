@@ -1,10 +1,15 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import { AppBar, Toolbar, Typography, IconButton,Menu,MenuItem } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+
+import { Auth } from "../../contexts";
+
+import axios from "axios";
 
 export default () => {
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const { session ,setSession } = useContext(Auth);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -13,6 +18,15 @@ export default () => {
   const handleClose = () => {
     setAnchorEl(null);
   }
+
+  const handleLogout = async () => {
+    try {
+      const res = await axios.get('/api/auth/signout');
+      setSession(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return <div>
     <AppBar position="static">
@@ -31,8 +45,8 @@ export default () => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+          <MenuItem onClick={handleClose}>{session.type}</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
       </Toolbar>
     </AppBar>
