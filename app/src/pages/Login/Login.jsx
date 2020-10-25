@@ -1,12 +1,69 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { TextField, Button, Typography } from '@material-ui/core';
 import classes from "./style.module.scss";
 
+import axios from "axios";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default () => {
 
-  const handleSubmit = (e) => {
+  const [data, setData] = useState({});
+  const [open, setOpen] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [alert, setAlert] = useState({
+    type: "",
+    message: ""
+  });
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData(old => {
+      return {
+        ...old,
+        [name] : value
+      }
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    setLoad(true);
     e.preventDefault();
-    console.log("form submitted")
+    try {
+      const res = await axios.post("/api/auth/signin", data);
+      if (res.data.auth) {
+        setAlert({
+          type: "success",
+          message: res.data.message
+        })
+      }
+      else {
+        setAlert({
+          type: "error",
+          message: res.data.message
+        })
+      }
+      setOpen(true);
+      setLoad(false);
+    }
+    catch (err) {
+      console.log(err);
+    }
+
   }
 
 
@@ -22,12 +79,17 @@ export default () => {
         </Typography>
       </div>
       <form onSubmit={handleSubmit}>
-        <TextField label="Email" variant="outlined" style={{width : "100%",marginBottom : "2rem"}} required/>
-        <TextField type="password" label="Password" variant="outlined" style={{ width: "100%",marginBottom: "2rem" }} required/>
+        <TextField label="Email" type="email" variant="outlined" name="email" onChange={handleChange} style={{width : "100%",marginBottom : "2rem"}} required/>
+        <TextField type="password" label="Password" name="password" onChange={handleChange} variant="outlined" style={{ width: "100%",marginBottom: "2rem" }} required/>
         <Button variant="outlined" color="primary" type="submit">
-            Login
+            Login  {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem"}}/>}
         </Button>
       </form>
     </div>
+    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={alert.type}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
   </section>;
 }
