@@ -41,14 +41,28 @@ exports.createBill = async(req, res) => {
 exports.showBills = async (req, res) => {
 
   try {
-
     const data = await User.findById(req.session.user.id, { bills: 1 });
     const bills = await Bill.find({_id : { $in : data.bills }})
     res.json(bills);
-
   } catch (err) {
     logger.error(err);
   }
   
+}
 
+exports.payBill = async (req, res) => {
+
+  try {
+    const data = await Bill.findByIdAndUpdate(req.body.id, { paid : true });
+    res.json({
+      done: true,
+      message: "Updated Successfully"
+    });
+  } catch (err) {
+    res.json({
+        message: 'Unable to Pay Bill : Error - ' + err.code,
+        done: false
+      });
+  }
+  
 }

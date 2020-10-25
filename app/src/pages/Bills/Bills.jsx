@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,useContext} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,6 +10,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Loader,BillModal } from '../../components';
 import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import IconButton from '@material-ui/core/IconButton';
+import PayButton from "./PayButton";
+
+import { Auth } from "../../contexts";
 
 import axios from "axios";
 
@@ -37,7 +40,8 @@ export default () => {
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
   const [open, setOpen] = useState(false);
-  const [index,setIndex] = useState(0);
+  const [index, setIndex] = useState(0);
+  const { session } = useContext(Auth);
 
   const getBill = async () => {
     try {
@@ -55,7 +59,8 @@ export default () => {
     getBill();
   },[]) 
 
-  function Row(data,ind) {
+  function Row(data, ind) {
+    if (session.type === "owner") {
       return <StyledTableRow StyledTableRow>
         <StyledTableCell>{ind + 1}</StyledTableCell>
         <StyledTableCell>{data._id}</StyledTableCell>
@@ -64,12 +69,33 @@ export default () => {
         <StyledTableCell>{data.total}</StyledTableCell>
         <StyledTableCell>{data.paid ? "Paid" : "Not Paid"}</StyledTableCell>
         <StyledTableCell>
-          <IconButton onClick={() => { setIndex(ind); setOpen(true);}}>
+          <IconButton onClick={() => { setIndex(ind); setOpen(true); }}>
             <VisibilityRoundedIcon />
           </IconButton>
-        </StyledTableCell>       
+        </StyledTableCell>
       </StyledTableRow>
+    } else {
+      if (data.paid !== true) {
+        return <StyledTableRow StyledTableRow>
+          <StyledTableCell>{ind + 1}</StyledTableCell>
+          <StyledTableCell>{data._id}</StyledTableCell>
+          <StyledTableCell>{data.customerId}</StyledTableCell>
+          <StyledTableCell>{data.items.length}</StyledTableCell>
+          <StyledTableCell>{data.total}</StyledTableCell>
+          <StyledTableCell>
+            <PayButton id={data._id} />
+          </StyledTableCell>
+          <StyledTableCell>
+            <IconButton onClick={() => { setIndex(ind); setOpen(true); }}>
+              <VisibilityRoundedIcon />
+            </IconButton>
+          </StyledTableCell>
+        </StyledTableRow>;
+      } else {
+        return <></>;
+      }
     }
+  }
 
   return <>
     <AppBar />
@@ -99,8 +125,3 @@ export default () => {
     }
   </>;
 }
-
-
-//  <StyledTableRow StyledTableRow key={row.name}> 
-//               <StyledTableCell align="right">{row.protein}</StyledTableCell>
-//             </StyledTableRow>
