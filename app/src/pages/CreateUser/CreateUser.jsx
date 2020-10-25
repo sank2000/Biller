@@ -1,13 +1,69 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Typography,TextField,MenuItem,Button } from '@material-ui/core';
 import classes from "./style.module.scss";
 import { AppBar } from '../../components';
+import axios from "axios";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default () => {
 
-  const handleSubmit = (e) => {
+  const [data, setData] = useState({});
+  const [open, setOpen] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [alert, setAlert] = useState({
+    type: "",
+    message: ""
+  });
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData(old => {
+      return {
+        ...old,
+        [name] : value
+      }
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    setLoad(true);
     e.preventDefault();
-    console.log("form submitted")
+    try {
+      const res = await axios.post("/api/auth/signup", data);
+      if (res.data.done) {
+        setAlert({
+          type: "success",
+          message: res.data.message
+        })
+      }
+      else {
+        setAlert({
+          type: "error",
+          message: res.data.message
+        })
+      }
+      setOpen(true);
+      setLoad(false);
+    }
+    catch (err) {
+      console.log(err);
+    }
+
   }
 
   const commonStyle = {
@@ -37,11 +93,11 @@ export default () => {
           Create User
       </Typography>
       <form onSubmit={handleSubmit}>
-        <TextField label="Name" variant="outlined" style={commonStyle} required />
-        <TextField label="Password" type="password" variant="outlined" style={commonStyle} required />
-        <TextField label="Email" variant="outlined" style={commonStyle} required />
-        <TextField label="Phone" variant="outlined" style={commonStyle} required />
-        <TextField label="Type" variant="outlined" select style={commonStyle} required >
+        <TextField label="Name" onChange={handleChange} name="name" variant="outlined" style={commonStyle} required />
+        <TextField label="Password" onChange={handleChange} name="password"  type="password" variant="outlined" style={commonStyle} required />
+        <TextField label="Email" onChange={handleChange} name="email" type="email"  variant="outlined" style={commonStyle} required />
+        <TextField label="Phone" onChange={handleChange} name="phone"  variant="outlined" style={commonStyle} required />
+        <TextField label="Type" onChange={handleChange} name="type"  variant="outlined" select style={commonStyle} required >
           {
             type.map((option) => {
              return <MenuItem key={option.value} value={option.value}>
@@ -50,12 +106,17 @@ export default () => {
             })
           }
         </TextField>
-        <TextField label="Company Name" variant="outlined" style={commonStyle} />
-        <TextField label="Address" multiline rows={4} variant="outlined" style={commonStyle} />
+        <TextField label="Company Name" onChange={handleChange} name="companyName"  variant="outlined" style={commonStyle} />
+        <TextField label="Address" onChange={handleChange} name="address"  multiline rows={4} variant="outlined" style={commonStyle} />
         <Button variant="outlined" color="primary" type="submit">
-            Create
+          Create {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem"}}/>}
         </Button>
       </form>
+       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={alert.type}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </div>
   </>;
 }

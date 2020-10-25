@@ -37,24 +37,21 @@ exports.signUp = (req, res) => {
     userData
       .save()
       .then(result => {
-        req.session.user = userData._id;
-        const { password, ...Data } = userData._doc;
         res.json({
-          ...Data,
           message: 'Account created successfully.',
-          auth: true
+          done: true
         });
       })
       .catch(err => {
         if (err.code === 11000) {
           res.json({
             message: 'Error creating account : Account already exists',
-            auth: false
+            done: false
           });
         } else {
           res.json({
             message: 'Unable to create account : Error - ' + err.code,
-            auth: false
+            done: false
           });
         }
       });
