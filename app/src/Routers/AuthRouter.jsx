@@ -6,7 +6,7 @@ import { Auth } from '../contexts';
 function RegisterRoute({ component: Component, ...rest }) {
   const AuthApi = React.useContext(Auth);
   return (
-    <Route {...rest} render={props => (!AuthApi.data.auth ? <Component {...props} /> : <Redirect to='/' />)} />
+    <Route {...rest} render={props => (!AuthApi.session.auth ? <Component {...props} /> : <Redirect to='/' />)} />
   );
 }
 

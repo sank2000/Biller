@@ -5,8 +5,9 @@ import { Auth } from '../contexts';
 
 function ProtectedRoute({ component: Component, ...rest }) {
   const AuthApi = React.useContext(Auth);
+  
   return (
-    <Route {...rest} render={props => (AuthApi.data.auth ? <Component {...props} /> : <Redirect to='/login' />)} />
+    <Route {...rest} render={props => (AuthApi.session.auth ? <Component {...props} /> : <Redirect to='/login' />)} />
   );
 }
 
