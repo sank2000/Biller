@@ -3,7 +3,7 @@ import { BrowserRouter as Router,Route, Switch } from 'react-router-dom';
 
 import { Home, Login, PayBill, CreateUser, CreateBill,Page404 } from "./pages";
 
-import {AuthRouter ,ProtectedRouter} from "./Routers"
+import {AuthRouter ,ProtectedRouter,OwnerRouter ,AdminRouter ,CustomerRouter} from "./Routers"
 
 export default () => {
   return <> 
@@ -11,9 +11,9 @@ export default () => {
       <Switch>
         <ProtectedRouter path='/' exact component={Home} />
         <AuthRouter path='/login' exact component={Login} />
-        <ProtectedRouter path='/paybill' exact component={PayBill} />
-        <ProtectedRouter path='/createuser' exact component={CreateUser} />
-        <ProtectedRouter path='/createbill' exact component={CreateBill} />
+        <CustomerRouter path='/paybill' exact component={PayBill} />
+        <AdminRouter path='/createuser' exact component={CreateUser} />
+        <OwnerRouter path='/createbill' exact component={CreateBill} />
         <Route path="*" component={Page404} />
       </Switch>
     </Router>
