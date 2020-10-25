@@ -12,6 +12,17 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {TextField,MenuItem} from '@material-ui/core';
 
+import axios from "axios";
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function Row(val,ind) {
   return <TableRow key={ind}>
     <TableCell component="th" scope="row">
@@ -68,30 +79,84 @@ function Bill({data,totals}) {
   </>
 }
 
-const type = [
-    {
-      value: "admin",
-      label: "Admin"
-    },
-    {
-      value: "owner",
-      label: "Owner"
-    },
-    {
-      value: "customer",
-      label: "Customer"
-    }
-  ]
-
 export default () => {
 
   const [items, setItems] = useState([]);
   const [open, setOpen] = useState(false);
   const [totals, setTotals] = useState({});
+  const [user,setUser] = useState("");
+  const [users, setUsers] = useState([]);
+  const [Aopen, AsetOpen] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [alert, setAlert] = useState({
+    type: "",
+    message: ""
+  });
 
-  const handleSubmit = () => {
-    console.log(items);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    AsetOpen(false);
+  };
+
+
+
+  const handleSubmit = async () => {
+    
+    setLoad(true);
+
+    const data = {
+      items: JSON.stringify(items),
+      customerId : user,
+      ...totals,
+      company: JSON.stringify({})
+    };
+
+    try {
+      const res = await axios.post("/api/bill/create", data);
+      if (res.data.done) {
+        setAlert({
+          type: "success",
+          message: res.data.message
+        })
+      }
+      else {
+        setAlert({
+          type: "error",
+          message: res.data.message
+        })
+      }
+      AsetOpen(true);
+      setLoad(false);
+    }
+    catch (err) {
+      console.log(err);
+    }
+
+
   }
+
+  const getData = async () => {
+    try {
+      const res = await axios.get("/api/user/");
+      setUsers(res.data.map(data => {
+        return {
+          value: data._id,
+          label: data.name
+        }
+      }));
+    }
+    catch (err) {
+      console.log(err)
+    }
+    
+  }
+
+  useEffect(() => {
+    getData();
+  },[])
 
   useEffect(() => {
     let total = 0;
@@ -114,9 +179,9 @@ export default () => {
       
       <div className={classes.bill_container}>
         <div className={classes.bill_top}>
-            <TextField label="To" variant="outlined" select  style={{minWidth : "4rem"}}>
+            <TextField label="To" variant="outlined" select  style={{minWidth : "4rem"}} onChange={(e) => setUser(e.target.value)}>
             {
-              type.map((option) => {
+              users.map((option) => {
               return <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -138,12 +203,19 @@ export default () => {
           <Button variant="outlined" color="secondary" onClick={() => setOpen(true)}>
             Add Item
           </Button>
-          <Button variant="outlined" color="primary" onClick={handleSubmit} disabled={true}>
-            Create
+          <Button variant="outlined" color="primary" onClick={handleSubmit} disabled={user === "" || items.length === 0 }>
+            Create {load && <CircularProgress size={"1rem"} style={{marginLeft:"1rem"}}/>}
           </Button>
         </div>
       </div>
       <Modal open={open} setOpen={setOpen} setItems={setItems} /> 
+
+      <Snackbar open={Aopen} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={alert.type}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
+
     </div>
   </>;
 }
