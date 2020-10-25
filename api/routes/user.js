@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { getUser,getUserbyId } = require('../controllers/userController');
-const { isAuth,isOwner } = require('../middlewares')
+const { getUser,getUserbyId,getAllUser } = require('../controllers/userController');
+const { isAuth,isOwner,isAdmin } = require('../middlewares')
 
 router.get('/customer', isAuth, isOwner, getUser);
+
+router.get('/all', isAuth, isAdmin, getAllUser);
 
 router.post('/id', isAuth, getUserbyId);
 

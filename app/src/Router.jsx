@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router,Route, Switch } from 'react-router-dom';
-import { Home, Login, BillHistory, CreateUser, CreateBill,Page404 , ShowBills} from "./pages";
+import { Home, Login, BillHistory, CreateUser, CreateBill,Page404 , ShowBills, ShowUser} from "./pages";
 
 import {AuthRouter ,ProtectedRouter,OwnerRouter ,AdminRouter ,CustomerRouter} from "./Routers"
 
@@ -15,6 +15,7 @@ export default () => {
         <CustomerRouter path='/history' exact component={BillHistory} />
 
         <AdminRouter path='/createuser' exact component={CreateUser} />
+        <AdminRouter path='/showuser' exact component={ShowUser} />
 
         <OwnerRouter path='/createbill' exact component={CreateBill} />
         <OwnerRouter path='/showbill' exact component={ShowBills} />

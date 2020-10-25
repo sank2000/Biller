@@ -5,3 +5,4 @@ export { default as CreateUser } from './CreateUser/CreateUser';
 export { default as CreateBill } from './CreateBill/CreateBill';
 export { default as ShowBills } from './Bills/Bills';
 export { default as Page404 } from './404/404';
+export { default as ShowUser } from './ShowUser/ShowUser';

@@ -34,6 +34,7 @@ export default function Home() {
       {session.type === "owner" && <Card name="Bills" image='/images/history.jpg' link="/showbill" />}
 
       {session.type === "admin" && <Card name="Create Account" image='/images/create.jpg' link="/createuser" />}
+      {session.type === "admin" && <Card name="Show Users" image='/images/history.jpg' link="/showuser" />}
     </section>
   </>;
 }
