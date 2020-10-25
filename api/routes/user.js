@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const { getUser } = require('../controllers/userController');
-const { isAuth } = require('../middlewares')
+const { isAuth,isOwner } = require('../middlewares')
 
-router.get('/',isAuth,getUser);
+router.get('/customer', isAuth, isOwner, getUser);
 
 
 module.exports = router;
