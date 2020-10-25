@@ -10,9 +10,11 @@ exports.CheckSession = (req, res) => {
    password: 0 => to hide password from result
   */
   if (req.session.user) {
-    User.findById(req.session.user, { password: 0 }, function (err, result) {
+    User.findById(req.session.user.id, { password: 0 }, function (err, result) {
       if (!err) {
+        const { password, ...Data } = result._doc;
         res.json({
+          ...Data,
           message: 'You are signed in!',
           auth: true
         });
@@ -71,8 +73,11 @@ exports.signIn = async (req, res) => {
     } else {
       bcrypt.compare(password, user.password, function (err, result) {
         if (result) {
-          req.session.user = user._id;
           const { password, ...Data } = user._doc;
+          req.session.user = {
+            id: user._id,
+            type: user.type
+          } 
           res.json({
             ...Data,
             message: `Welcome ${user.name}!`,
