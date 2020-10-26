@@ -1,6 +1,9 @@
 import React,{useState,useContext} from 'react';
 import { AppBar, Toolbar, Typography, IconButton,Menu,MenuItem } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import PersonIcon from '@material-ui/icons/Person';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AccessibilityIcon from '@material-ui/icons/Accessibility';
 
 import { Auth } from "../../contexts";
 
@@ -47,8 +50,9 @@ export default () => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>{session.type}</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}><PersonIcon style={{color: "#21295C",marginRight:".5rem"}} />{session.name}</MenuItem>
+        <MenuItem onClick={handleClose}><AccessibilityIcon style={{color: "#21295C",marginRight:".5rem"}} />{session.type}</MenuItem>
+        <MenuItem onClick={handleLogout}><ExitToAppIcon style={{color: "#21295C",marginRight:".5rem"}} />Logout</MenuItem>
       </Menu>
       </Toolbar>
     </AppBar>
