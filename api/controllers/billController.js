@@ -80,7 +80,7 @@ exports.payBill = async (req, res) => {
     const data = await Bill.findByIdAndUpdate(req.body.id, { paid : true });
     res.json({
       done: true,
-      message: "Updated Successfully"
+      message: "Payment Successfully"
     });
   } catch (err) {
     res.json({

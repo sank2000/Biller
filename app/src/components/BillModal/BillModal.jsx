@@ -119,6 +119,7 @@ function Bill({data,totals}) {
 }
 
 export default ({ open, setOpen, data }) => {
+  console.log(data)
   const { items,paid,_id,customerId, ...totals } = data;
 
   const [user, setUser] = useState(null);
@@ -131,7 +132,6 @@ export default ({ open, setOpen, data }) => {
   const getUser = async() => {
     try {
       const res = await axios.post("/api/user/id", { id: customerId });
-      console.log(res.data);
       setUser(res.data);
     } catch (err) {
       console.log(err);
@@ -143,7 +143,7 @@ export default ({ open, setOpen, data }) => {
       getUser();
     }
     // eslint-disable-next-line 
-  },[])
+  },[customerId])
 
 
   return <div>
