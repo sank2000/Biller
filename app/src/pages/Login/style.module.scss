@@ -1,6 +1,7 @@
 .container {
   display: flex;
   text-align: center;
+  width: 100%;
 }
 
 .brand {
@@ -12,8 +13,13 @@
 .leftSide {
   width: 70%;
   height: 100vh;
+  min-height: 20rem;
   background-position: center;
   background-size: cover;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 }
 
 .rightSide {
@@ -24,4 +30,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    height: 100vh;
+  }
 }

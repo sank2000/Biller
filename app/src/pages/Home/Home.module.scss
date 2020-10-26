@@ -22,6 +22,11 @@
   transition: all 0.3s;
   cursor: pointer;
 
+  @media (max-width: 450px) {
+    width: 17rem;
+    height: 10rem;
+  }
+
   &:hover {
     filter: brightness(150%);
     transform: translateY(-1rem);

@@ -18,7 +18,7 @@ export default () => {
   const [data, setData] = useState({});
   const [open, setOpen] = useState(false);
   const [load, setLoad] = useState(false);
-  const [alert, setAlert] = useState({
+  const [alert, setAlert] = useState({ 
     type: "",
     message: ""
   });
@@ -81,7 +81,7 @@ export default () => {
           Biller
         </Typography>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{width : "90%"}}>
         <TextField label="Email" type="email" variant="outlined" name="email" onChange={handleChange} style={{width : "100%",marginBottom : "2rem"}} required/>
         <TextField type="password" label="Password" name="password" onChange={handleChange} variant="outlined" style={{ width: "100%",marginBottom: "2rem" }} required/>
         <Button variant="contained" color="primary" type="submit">
