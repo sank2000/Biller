@@ -1,16 +1,11 @@
 import React,{useState} from 'react';
 import { Typography,TextField,MenuItem,Button } from '@material-ui/core';
 import classes from "./style.module.scss";
-import { AppBar } from '../../components';
+import { AppBar,Alert } from '../../components';
 import axios from "axios";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 export default () => {
 

@@ -3,14 +3,9 @@ import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import {Alert} from '../../components';
 
 import axios from "axios";
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
 
 export default ({ id }) => {
   const [open, setOpen] = useState(false);

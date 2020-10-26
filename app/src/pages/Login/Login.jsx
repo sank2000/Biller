@@ -6,12 +6,8 @@ import axios from "axios";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import {Alert} from '../../components';
 import { Auth } from "../../contexts";
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 export default () => {
 

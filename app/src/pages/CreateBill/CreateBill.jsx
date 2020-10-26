@@ -1,15 +1,8 @@
 import React,{useState,useEffect} from 'react';
 import { Typography,Button } from '@material-ui/core';
 import classes from "./style.module.scss";
-import { AppBar, Modal } from '../../components';
+import { AppBar, Modal,Alert } from '../../components';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import {TextField,MenuItem} from '@material-ui/core';
 
 import axios from "axios";
@@ -17,70 +10,10 @@ import axios from "axios";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
-function Row(val,ind) {
-  return <TableRow key={ind}>
-    <TableCell component="th" scope="row">
-      {ind+1}
-    </TableCell>
-    <TableCell>{val.name}</TableCell>
-    <TableCell>{val.count}</TableCell>
-    <TableCell>{val.price}</TableCell>
-    <TableCell>{val.total}</TableCell>
-  </TableRow>
-}
-
-function Total({data}) {
-  return <>
-    <TableRow>
-      <TableCell colSpan={3} />
-      <TableCell >Subtotal</TableCell>
-      <TableCell >{data.subTotal}</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell colSpan={3} />
-      <TableCell >Tax</TableCell>
-      <TableCell >{data.tax}%</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell colSpan={3} />
-      <TableCell >Total</TableCell>
-      <TableCell >{data.total}</TableCell>
-    </TableRow>
-  </>
-}
-
-function Bill({data,totals}) {
-  return <>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>No.</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Count</TableCell>
-            <TableCell>Unit</TableCell>
-            <TableCell>Price</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <>
-            {data.map(Row)}
-          </>
-          <Total data={totals}/>
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </>
-}
+import Bill from "./Bill";
 
 export default () => {
-
   const [items, setItems] = useState([]);
   const [open, setOpen] = useState(false);
   const [totals, setTotals] = useState({});
@@ -100,8 +33,6 @@ export default () => {
 
     AsetOpen(false);
   };
-
-
 
   const handleSubmit = async () => {
     
@@ -137,8 +68,6 @@ export default () => {
     catch (err) {
       console.log(err);
     }
-
-
   }
 
   const getData = async () => {
@@ -154,7 +83,6 @@ export default () => {
     catch (err) {
       console.log(err)
     }
-    
   }
 
   useEffect(() => {
