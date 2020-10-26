@@ -22,7 +22,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "js-logger": "^1.6.0"
+    "js-logger": "^1.6.0",
+    "dotenv": "^8.2.0"
   },
   "engines": {
     "node": "12.16.2"
