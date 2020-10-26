@@ -119,8 +119,7 @@ function Bill({data,totals}) {
 }
 
 export default ({ open, setOpen, data }) => {
-  console.log(data)
-  const { items,paid,_id,customerId, ...totals } = data;
+  const { items,paid,_id,customerId,company, ...totals } = data;
 
   const [user, setUser] = useState(null);
   const { session } = useContext(Auth);
@@ -165,6 +164,18 @@ export default ({ open, setOpen, data }) => {
           </Typography>
           <Typography variant="subtitle1" style={{ display: "flex", alignItems: "center" }}>
             <PhoneAndroidIcon style={{color: "#21295C",marginRight:".5rem"}} />{user.phone}
+          </Typography>
+        </div>}
+        {(session.type === "customer" && company !== undefined )&& <div>
+          <Typography variant="h6">Company Detail :</Typography>
+          <Typography variant="subtitle1" style={{ display: "flex", alignItems: "center" }}>
+            <PersonIcon style={{color: "#21295C",marginRight:".5rem"}} />{company.name}
+          </Typography>
+          <Typography variant="subtitle1" style={{ display: "flex", alignItems: "center" }}>
+            <MailIcon style={{color: "#21295C",marginRight:".5rem"}} />{company.email}
+          </Typography>
+          <Typography variant="subtitle1" style={{ display: "flex", alignItems: "center" }}>
+            <PhoneAndroidIcon style={{color: "#21295C",marginRight:".5rem"}} />{company.phone}
           </Typography>
         </div>}
         </DialogContent>

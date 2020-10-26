@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import { Typography,Button } from '@material-ui/core';
 import classes from "./style.module.scss";
 import { AppBar, Modal,Alert } from '../../components';
@@ -10,6 +10,8 @@ import axios from "axios";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Snackbar from '@material-ui/core/Snackbar';
+
+import { Auth } from "../../contexts";
 
 import Bill from "./Bill";
 
@@ -25,7 +27,7 @@ export default () => {
     type: "",
     message: ""
   });
-
+  const { session } = useContext(Auth);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -42,7 +44,11 @@ export default () => {
       items: JSON.stringify(items),
       customerId : user,
       ...totals,
-      company: JSON.stringify({})
+      company: JSON.stringify({
+        name: session.name,
+        email: session.email,
+        phone: session.phone
+      })
     };
 
     try {
