@@ -12,6 +12,8 @@ import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import IconButton from '@material-ui/core/IconButton';
 import PayButton from "./PayButton";
 
+import { Typography } from '@material-ui/core';
+
 import { Auth } from "../../contexts";
 
 import axios from "axios";
@@ -45,7 +47,11 @@ export default () => {
 
   const getBill = async () => {
     try {
-      const res = await axios.get("/api/bill/show");
+      let url = "/api/bill/show";
+      if (session.type === "customer") {
+        url = "/api/bill/shownotpaid"
+      } 
+      const res = await axios.get(url);
       setData(res.data);
       setLoad(false);
     }
@@ -57,44 +63,25 @@ export default () => {
 
   useEffect(() => {
     getBill();
+    // eslint-disable-next-line 
   },[]) 
 
   function Row(data, ind) {
-    if (session.type === "owner") {
       return <StyledTableRow StyledTableRow>
         <StyledTableCell>{ind + 1}</StyledTableCell>
         <StyledTableCell>{data._id}</StyledTableCell>
         <StyledTableCell>{data.customerId}</StyledTableCell>
         <StyledTableCell>{data.items.length}</StyledTableCell>
         <StyledTableCell>{data.total}</StyledTableCell>
-        <StyledTableCell>{data.paid ? "Paid" : "Not Paid"}</StyledTableCell>
+        {session.type === "customer" ? <StyledTableCell>
+            <PayButton id={data._id} />
+          </StyledTableCell> : <StyledTableCell>{data.paid ? "Paid" : "Not Paid"}</StyledTableCell>}
         <StyledTableCell>
           <IconButton onClick={() => { setIndex(ind); setOpen(true); }}>
             <VisibilityRoundedIcon />
           </IconButton>
         </StyledTableCell>
       </StyledTableRow>
-    } else {
-      if (data.paid !== true) {
-        return <StyledTableRow StyledTableRow>
-          <StyledTableCell>{ind + 1}</StyledTableCell>
-          <StyledTableCell>{data._id}</StyledTableCell>
-          <StyledTableCell>{data.customerId}</StyledTableCell>
-          <StyledTableCell>{data.items.length}</StyledTableCell>
-          <StyledTableCell>{data.total}</StyledTableCell>
-          <StyledTableCell>
-            <PayButton id={data._id} />
-          </StyledTableCell>
-          <StyledTableCell>
-            <IconButton onClick={() => { setIndex(ind); setOpen(true); }}>
-              <VisibilityRoundedIcon />
-            </IconButton>
-          </StyledTableCell>
-        </StyledTableRow>;
-      } else {
-        return <></>;
-      }
-    }
   }
 
   return <>
@@ -120,7 +107,8 @@ export default () => {
             </TableBody>
           </Table>
           </TableContainer>
-          <BillModal open={open} setOpen={setOpen}  data={data[index]} />
+          {data.length === 0 && <Typography variant="h6" style={{textAlign : "center"}}>No Bill Found</Typography>}
+          {data.length !== 0 && <BillModal open={open} setOpen={setOpen}  data={data[index]} />}
       </>
     }
   </>;

@@ -12,6 +12,7 @@ import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 import IconButton from '@material-ui/core/IconButton';
 
 import axios from "axios";
+import { Typography } from '@material-ui/core';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -37,11 +38,11 @@ export default () => {
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
   const [open, setOpen] = useState(false);
-  const [index,setIndex] = useState(0);
+  const [index, setIndex] = useState(0);
 
   const getBill = async () => {
     try {
-      const res = await axios.get("/api/bill/show");
+      const res = await axios.get("/api/bill/showpaid");
       setData(res.data);
       setLoad(false);
     }
@@ -56,7 +57,6 @@ export default () => {
   },[]) 
 
   function Row(data, ind) {
-    if (data.paid === true) {
       return <StyledTableRow StyledTableRow>
         <StyledTableCell>{ind + 1}</StyledTableCell>
         <StyledTableCell>{data._id}</StyledTableCell>
@@ -68,12 +68,8 @@ export default () => {
             <VisibilityRoundedIcon />
           </IconButton>
         </StyledTableCell>
-      </StyledTableRow>;
-    } else {
-      return <></>;
-    }
-      
-    }
+      </StyledTableRow>;      
+  }
 
   return <>
     <AppBar />
@@ -97,7 +93,8 @@ export default () => {
             </TableBody>
           </Table>
           </TableContainer>
-          <BillModal open={open} setOpen={setOpen}  data={data[index]} />
+          {data.length === 0  && <Typography variant="h6" style={{textAlign : "center"}}>No Bill Found</Typography>}
+          {data.length !== 0 && <BillModal open={open} setOpen={setOpen} data={data[index]} />}
       </>
     }
   </>;

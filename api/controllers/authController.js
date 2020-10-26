@@ -89,7 +89,7 @@ exports.signIn = async (req, res) => {
       });
     }
   } catch (err) {
-    logger.ERROR('Error:' + err);
+    logger.error('Error:' + err);
   }
 };
 

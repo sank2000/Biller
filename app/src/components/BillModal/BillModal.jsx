@@ -19,6 +19,7 @@ import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import MailIcon from '@material-ui/icons/Mail';
 import PersonIcon from '@material-ui/icons/Person';
 
+
 import { Auth } from "../../contexts";
 
 const styles = (theme) => ({
@@ -146,7 +147,7 @@ export default ({ open, setOpen, data }) => {
 
 
   return <div>
-      <Dialog onClose={handleClose} open={open}>
+      <Dialog onClose={handleClose} open={open} fullWidth>
         <DialogTitle onClose={handleClose}>
            Details
         </DialogTitle>
@@ -157,13 +158,13 @@ export default ({ open, setOpen, data }) => {
         {user !== null && <div>
           <Typography variant="h6">Customer Detail :</Typography>
           <Typography variant="subtitle1" style={{ display: "flex", alignItems: "center" }}>
-            <PersonIcon />{user.name}
+            <PersonIcon style={{color: "#21295C",marginRight:".5rem"}} />{user.name}
           </Typography>
           <Typography variant="subtitle1" style={{ display: "flex", alignItems: "center" }}>
-            <MailIcon />{user.email}
+            <MailIcon style={{color: "#21295C",marginRight:".5rem"}} />{user.email}
           </Typography>
           <Typography variant="subtitle1" style={{ display: "flex", alignItems: "center" }}>
-            <PhoneAndroidIcon />{user.phone}
+            <PhoneAndroidIcon style={{color: "#21295C",marginRight:".5rem"}} />{user.phone}
           </Typography>
         </div>}
         </DialogContent>

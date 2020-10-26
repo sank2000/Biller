@@ -50,6 +50,30 @@ exports.showBills = async (req, res) => {
   
 }
 
+exports.showPaidBills = async (req, res) => {
+
+  try {
+    const data = await User.findById(req.session.user.id, { bills: 1 });
+    const bills = await Bill.find({_id : { $in : data.bills },paid : true})
+    res.json(bills);
+  } catch (err) {
+    logger.error(err);
+  }
+  
+}
+
+exports.showNotPaidBills = async (req, res) => {
+
+  try {
+    const data = await User.findById(req.session.user.id, { bills: 1 });
+    const bills = await Bill.find({_id : { $in : data.bills },paid : false})
+    res.json(bills);
+  } catch (err) {
+    logger.error(err);
+  }
+  
+}
+
 exports.payBill = async (req, res) => {
 
   try {
