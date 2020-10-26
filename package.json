@@ -12,7 +12,7 @@
     "start": "node server.js",
     "server": "nodemon --ignore app/",
     "app": "npm start --prefix app",
-    "test": "echo \"Error: Test is not setup yet\""
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix api && npm install --prefix app && npm run build --prefix app"
   },
   "keywords": [
     "MERN"
@@ -23,6 +23,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "js-logger": "^1.6.0"
+  },
+  "engines": {
+    "node": "12.16.2"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
