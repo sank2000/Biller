@@ -53,7 +53,7 @@ export default () => {
         <StyledTableCell>{data.items.length}</StyledTableCell>
         <StyledTableCell>{data.total}</StyledTableCell>
         {session.type === "customer" ? <StyledTableCell>
-            <PayButton id={data._id} />
+            <PayButton billId={data._id} amount={data.total} />
           </StyledTableCell> : <StyledTableCell>{data.paid ? "Paid" : "Not Paid"}</StyledTableCell>}
         <StyledTableCell>
           <IconButton onClick={() => { setIndex(ind); setOpen(true); }}>

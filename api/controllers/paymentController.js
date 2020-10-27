@@ -1,10 +1,12 @@
 const Stripe = require("stripe");
+const logger = require('js-logger');
+
+const { Bill} = require("../models");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET);
 
-
 exports.handleStripe = async (req, res) => {
-  const { id, amount } = req.body;
+  const { id, amount,billId } = req.body;
 
   try {
     const payment = await stripe.paymentIntents.create({
@@ -15,14 +17,18 @@ exports.handleStripe = async (req, res) => {
       confirm: true
     });
 
-    console.log(payment);
+    logger.info(payment);
 
-    return res.status(200).json({
-      confirm: "abc123"
+    await Bill.findByIdAndUpdate(billId, { paid : true });
+
+    return res.json({
+      done: true,
+      message: "Payment Successfull"
     });
+
   } catch (error) {
-    console.log(error);
-    return res.status(400).json({
+    logger.error(error);
+    return res.json({
       message: error.message
     });
   }

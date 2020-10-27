@@ -2,6 +2,8 @@ import React from 'react';
 
 import axios from "axios";
 
+import Modal from "./pages/Bills/Modal";
+
 import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
@@ -14,12 +16,18 @@ const stripePromise = loadStripe("pk_test_51HgZQIDb5IfsHukvjCC40Ha3u9cIlUn1CTUjO
 
 export default () => {
 
+  const [open, setOpen] = React.useState(false);
+
   return (
     <>
       <h1>This is test Page</h1>
       <Elements stripe={stripePromise}>
       <CheckoutForm />
-    </Elements>
+      </Elements>
+       <button variant="outlined" color="primary" onClick={() => setOpen(true)}>
+        Open dialog
+      </button>
+      <Modal open={open} setOpen={setOpen} />
     </>
   );
 };
