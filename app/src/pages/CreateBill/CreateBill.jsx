@@ -1,7 +1,7 @@
 import React,{useState,useEffect,useContext} from 'react';
 import { Typography,Button } from '@material-ui/core';
 import classes from "./style.module.scss";
-import { AppBar, Modal,Alert } from '../../components';
+import { AppBar,AddItemModal as Modal,Alert } from '../../components';
 
 import {TextField,MenuItem} from '@material-ui/core';
 
