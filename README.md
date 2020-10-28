@@ -36,7 +36,8 @@
 
 <br />
 
-> owner1@gmail.com > <br/>
+> owner1@biller.com 
+<br/>
 > password
 
 <br />
@@ -45,7 +46,8 @@
 
 <br />
 
-> customer1@gmail.com > <br />
+> customer1@biller.com 
+<br />
 > password
 
 <p align="center" >
