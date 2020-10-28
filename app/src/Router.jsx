@@ -4,8 +4,6 @@ import { Home, Login, BillHistory, CreateUser, CreateBill,Page404 , ShowBills, S
 
 import { AuthRouter, ProtectedRouter, OwnerRouter, AdminRouter, CustomerRouter } from "./Routers"
 
-import Test from "./Test";
-
 export default () => {
   return <> 
     <Router>
@@ -21,10 +19,9 @@ export default () => {
 
         <OwnerRouter path='/createbill' exact component={CreateBill} />
         <OwnerRouter path='/showbill' exact component={ShowBills} />
-
-        <Route path="/test" component={Test} />
         
         <Route path="*" component={Page404} />
+        
       </Switch>
     </Router>
   </>

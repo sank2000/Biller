@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const { handleStripe,handlePayPal } = require('../controllers/paymentController');
-const { isNotAdmin } = require('../middlewares')
+const { isCustomer } = require('../middlewares')
 
-router.post('/stripe', handleStripe);
-router.post('/paypal', handlePayPal);
+router.post('/stripe',isCustomer, handleStripe);
+router.post('/paypal',isCustomer, handlePayPal);
 
 module.exports = router;

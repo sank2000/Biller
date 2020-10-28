@@ -68,7 +68,6 @@ const Paypal = ({setDisable,amount,billId}) => {
 
       try {
         const { data } = await axios.post("/api/payment/stripe", { id, amount: amount * 100,billId});
-        console.log(data);
         if (data.done) {
         setAlert({
           type: "success",

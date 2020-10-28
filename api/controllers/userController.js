@@ -8,7 +8,7 @@ exports.getUser = async(req, res) => {
     res.json(users);
   }
   catch (err) {
-    console.log(err)
+    logger.error(err)
   }
 };
 
@@ -18,7 +18,7 @@ exports.getAllUser = async(req, res) => {
     res.json(users);
   }
   catch (err) {
-    console.log(err)
+    logger.error(err)
   }
 };
 
@@ -28,6 +28,6 @@ exports.getUserbyId = async(req, res) => {
     res.json(users);
   }
   catch (err) {
-    console.log(err)
+    logger.error(err)
   }
 };

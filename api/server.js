@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-const { auth,user,bill,payment } = require('./routes');
+const { auth, user, bill, payment } = require('./routes');
+const { isAuth } = require('./middlewares');
 
 router.use(
   session({
@@ -28,7 +29,7 @@ router.use('/user', user);
 router.use('/bill', bill);
 router.use('/payment', payment);
 
-router.get("/config/paypal", (req, res) => {
+router.get("/config/paypal",isAuth, (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
 

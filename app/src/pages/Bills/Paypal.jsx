@@ -50,7 +50,6 @@ export default ({setDisable,amount,billId}) => {
         time: details.update_time,
         billId
       });
-      console.log(res.data);
       
       if (res.data.done) {
         setAlert({
