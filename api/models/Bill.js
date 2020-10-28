@@ -9,6 +9,10 @@ const Bill = new Schema({
     type: String,
     required: true
   },
+  transactionId: {
+    type: String,
+    default: null
+  },
   company: {
     type: Object,
     required: true

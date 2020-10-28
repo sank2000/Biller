@@ -17,9 +17,20 @@ exports.handleStripe = async (req, res) => {
       confirm: true
     });
 
-    logger.info(payment);
+    // logger.info(payment);
 
-    await Bill.findByIdAndUpdate(billId, { paid : true });
+    const transaction = new Transaction({
+      billId,
+      transactionId: payment.id,
+      type: "stripe",
+      status: payment.status,
+      time: new Date(),
+      email: payment.receipt_email === null && ""
+    });
+
+    await transaction.save();
+
+    await Bill.findByIdAndUpdate(billId, { paid : true,transactionId : transaction._id });
 
     return res.json({
       done: true,
@@ -49,7 +60,7 @@ exports.handlePayPal = async (req, res) => {
     });
 
     await transaction.save();
-    await Bill.findByIdAndUpdate(billId, { paid : true });
+    await Bill.findByIdAndUpdate(billId, { paid : true,transactionId : transaction._id  });
 
     return res.json({
       done: true,
