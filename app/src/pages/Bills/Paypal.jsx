@@ -1,45 +1,19 @@
-import React,{useState,useContext} from 'react';
+import React,{useState,useEffect} from 'react';
+
+import { PayPalButton } from "react-paypal-button-v2";
 import axios from "axios";
 
-import { Button } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import { Alert } from '../../components';
 
-import {Auth } from "../../contexts";
-
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  CardElement,
-  useStripe,
-  useElements
-} from "@stripe/react-stripe-js";
-
-const stripePromise = loadStripe("pk_test_51HgZQIDb5IfsHukvjCC40Ha3u9cIlUn1CTUjOldodyvcHObdplUEpWBNCpLELMwYedX0u9LwitGjZb9DeGoAagTq00tM6Ck9LC");
-
-export default (props) => {
-  return (
-    <>
-      <Elements stripe={stripePromise}>
-          <Paypal {...props} />
-      </Elements>
-    </>
-  );
-};
-
-
-const Paypal = ({setDisable,amount,billId}) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [load, setLoad] = useState(false);
+export default ({setDisable,amount,billId}) => {
+  const [sdkReady, setSdkReady] = useState(false);
   const [open, setOpen] = useState(false);
+  const [closePaypal, setClosePaypal] = useState(false);
   const [alert, setAlert] = useState({
     type: "",
     message: ""
   });
-
-  const { session } = useContext(Auth);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -49,83 +23,88 @@ const Paypal = ({setDisable,amount,billId}) => {
     setOpen(false);
   };
 
-  const handleSubmit = async event => {
+  const addPayPalScript = async () => {
+      const { data } = await axios.get('/api/config/paypal');
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+  };
 
-    setLoad(true);
+  const handelSuccess =  async (details, data) => {
+  
+    setClosePaypal(true);
+
     setDisable(true);
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-      billing_details: {
-            name : session.name,
-            email : session.email,
-        }
-    });
-
-    if (!error) {
-      const { id } = paymentMethod;
-
-      try {
-        const { data } = await axios.post("/api/payment/stripe", { id, amount: amount * 100,billId});
-        console.log(data);
-        if (data.done) {
+    try{
+      const res = await axios.post("/api/payment/paypal", {
+        id: data.orderID,
+        intent: details.intent,
+        email: details.payer.email_address,
+        status: details.status,
+        time: details.update_time,
+        billId
+      });
+      console.log(res.data);
+      
+      if (res.data.done) {
         setAlert({
           type: "success",
-          message: data.message
+          message: res.data.message
         });
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       }
       else {
-          setAlert({
-            type: "error",
-            message: data.message
-          });
-          setDisable(false);
+        setAlert({
+          type: "error",
+          message: res.data.message
+        });
+        setDisable(false);
       }
-
-        setLoad(false);
-        setOpen(true);
-        
-      } catch (error) {
-        console.log(error);
-      }
-    }else {
-      setAlert({
-        type: "error",
-        message: error.message
-      });
-      setLoad(false);
       setOpen(true);
-      setDisable(false);
     }
+    catch (error) {
+        console.log(error);
+    }
+  }
 
-  };
+  const handelError = (err) => {
+    setAlert({
+        type: "error",
+        message: "Unable to make payments"
+    });
+  }
 
-  const OPTIONS = {
-    hidePostalCode: true
-  };
+
+  useEffect(() => {
+    addPayPalScript();
+  }, []);
 
 
-  return <>
-    <div style={{ maxWidth: "400px", margin: "0 auto",width: "90%" }}>
-          <CardElement options={OPTIONS} />
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            style={{marginTop :"1rem",float :"right"}}
-            disabled={!stripe}
-            onClick={handleSubmit}>
-              Pay Now{load && <CircularProgress size={".8rem"} style={{marginLeft:".8rem",color: "white"}}/>}
-          </Button>
-    </div>
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+  return (
+    <>
+      {(sdkReady && !closePaypal) &&
+        <PayPalButton
+          amount={parseInt(amount * 0.014)}
+          // shippingPreference="NO_SHIPPING" 
+          onSuccess={handelSuccess}
+          onError={handelError}
+          onCancel={() => setDisable(false)}
+        
+        />}
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity={alert.type}>
             {alert.message}
           </Alert>
-    </Snackbar>
+      </Snackbar>
     </>
+  );
 };
+

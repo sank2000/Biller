@@ -1,82 +1,53 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 
+import { PayPalButton } from "react-paypal-button-v2";
 import axios from "axios";
 
-import Modal from "./pages/Bills/Modal";
-
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  CardElement,
-  useStripe,
-  useElements
-} from "@stripe/react-stripe-js";
-
-const stripePromise = loadStripe("pk_test_51HgZQIDb5IfsHukvjCC40Ha3u9cIlUn1CTUjOldodyvcHObdplUEpWBNCpLELMwYedX0u9LwitGjZb9DeGoAagTq00tM6Ck9LC");
-
 export default () => {
+  const [sdkReady, setSdkReady] = useState(false);
 
-  const [open, setOpen] = React.useState(false);
+  const addPayPalScript = async () => {
+      const { data } = await axios.get('/api/config/paypal');
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+  };
+
+
+  useEffect(() => {
+    addPayPalScript();
+  }, []);
+
 
   return (
     <>
       <h1>This is test Page</h1>
-      <Elements stripe={stripePromise}>
-      <CheckoutForm />
-      </Elements>
-       <button variant="outlined" color="primary" onClick={() => setOpen(true)}>
-        Open dialog
-      </button>
-      <Modal open={open} setOpen={setOpen} />
+      {sdkReady &&
+        <PayPalButton
+          amount="0.01"
+          // shippingPreference="NO_SHIPPING" 
+          onSuccess={async (details, data) => {
+
+            console.log(details);
+            console.log("#####")
+            console.log(data);
+
+            const res = await axios.post("/api/payment/paypal", {
+              id: data.orderID,
+              intent: details.intent,
+              email: details.payer.email_address,
+              status: details.status,
+              time: details.update_time
+            })
+            console.log(res.data);
+          }}
+        />}
     </>
   );
 };
 
-
-const CheckoutForm = ({ success }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-
-  const handleSubmit = async event => {
-    event.preventDefault();
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement)
-    });
-
-    console.log(error);
-    console.log("------");
-    console.log(paymentMethod);
-
-    if (!error) {
-      const { id } = paymentMethod;
-
-      try {
-        const { data } = await axios.post("/api/payment/stripe", { id, amount: 1099 * 100});
-        console.log(data);
-        // success();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ maxWidth: "400px", margin: "0 auto" }}
-    >
-      <h2>Price: $10.99 USD</h2>
-      <img
-        src="https://images.ricardocuisine.com/services/recipes/500x675_7700.jpg"
-        alt="ig"
-        style={{ maxWidth: "50px" }}
-      />
-      <CardElement />
-      <button type="submit" disabled={!stripe}>
-        Pay
-      </button>
-    </form>
-  );
-};

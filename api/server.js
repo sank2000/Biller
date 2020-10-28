@@ -28,6 +28,10 @@ router.use('/user', user);
 router.use('/bill', bill);
 router.use('/payment', payment);
 
+router.get("/config/paypal", (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || "sb");
+});
+
 router.get('*', (req, res) => {
   res.status(404).send('Unknown Request');
 });

@@ -1,7 +1,7 @@
 const Stripe = require("stripe");
 const logger = require('js-logger');
 
-const { Bill} = require("../models");
+const { Bill,Transaction} = require("../models");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET);
 
@@ -19,6 +19,36 @@ exports.handleStripe = async (req, res) => {
 
     logger.info(payment);
 
+    await Bill.findByIdAndUpdate(billId, { paid : true });
+
+    return res.json({
+      done: true,
+      message: "Payment Successfull"
+    });
+
+  } catch (error) {
+    logger.error(error);
+    return res.json({
+      message: error.message
+    });
+  }
+};
+
+
+exports.handlePayPal = async (req, res) => {
+  const { id, status,billId,time,email } = req.body;
+
+  try {
+    const transaction = new Transaction({
+      billId,
+      transactionId: id,
+      type: "paypal",
+      status,
+      time,
+      email
+    });
+
+    await transaction.save();
     await Bill.findByIdAndUpdate(billId, { paid : true });
 
     return res.json({

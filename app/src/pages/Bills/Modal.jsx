@@ -12,8 +12,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
-
 import PayPal from "./Paypal";
+import Stripe from "./Stripe";
 
 export default ({ open, setOpen,billId,amount}) => {
   
@@ -39,9 +39,9 @@ export default ({ open, setOpen,billId,amount}) => {
             <FormLabel component="legend">Method</FormLabel>
             <RadioGroup  name="method" value={value} onChange={handleChange}>
               <FormControlLabel value="stripe" control={<Radio />} label="Stripe" />
-              {value === "stripe" && <PayPal setDisable={setDisable} billId={billId} amount={amount} />}
-              {/* <FormControlLabel value="paypal" control={<Radio />} label="Pay Pal" />
-              {value === "paypal" && <h3>Pay with Paypal</h3>} */}
+              {value === "stripe" && <Stripe setDisable={setDisable} billId={billId} amount={amount} />}
+              <FormControlLabel value="paypal" control={<Radio />} label="Pay Pal" />
+              {value === "paypal" && <PayPal setDisable={setDisable} billId={billId} amount={amount} />}
             </RadioGroup>
           </FormControl>
 
