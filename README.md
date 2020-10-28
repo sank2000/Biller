@@ -28,7 +28,7 @@
 <br />
 <br />
 
-### Also u can test this web using following credentials:
+### Also u can test this web app using following credentials:
 
 <br />
 
@@ -38,6 +38,7 @@
 
 > owner1@biller.com 
 <br/>
+
 > password
 
 <br />
@@ -48,7 +49,8 @@
 
 > customer1@biller.com 
 <br />
+
 > password
 
 <p align="center" >
-&copy; sank200</p>
+&copy; sank2000</p>
