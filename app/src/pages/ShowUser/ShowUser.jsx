@@ -30,7 +30,7 @@ export default () => {
   },[]) 
 
   function Row(data, ind) {
-    return <StyledTableRow StyledTableRow>
+    return <StyledTableRow StyledTableRow key={ind}> 
       <StyledTableCell>{ind + 1}</StyledTableCell>
       <StyledTableCell>{data.name}</StyledTableCell>
       <StyledTableCell>{data.type}</StyledTableCell>
