@@ -12,7 +12,8 @@
     "start": "node server.js",
     "server": "nodemon --ignore app/",
     "app": "npm start --prefix app",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix api && npm install --prefix app && npm run build --prefix app"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix api && npm install --prefix app && npm run build --prefix app",
+    "build": "npm install --prefix api && npm install --prefix app && npm run build --prefix app"
   },
   "keywords": [
     "MERN"
