@@ -27,9 +27,6 @@
     "js-logger": "^1.6.0",
     "stripe": "^8.118.0"
   },
-  "engines": {
-    "node": "12.16.2"
-  },
   "devDependencies": {
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.6",
