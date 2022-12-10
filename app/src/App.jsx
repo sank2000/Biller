@@ -17,7 +17,7 @@ const theme = createMuiTheme({
   }
 });
 
-
+axios.defaults.baseURL = 'https://biller.up.railway.app/';
 
 export default () => {
 
